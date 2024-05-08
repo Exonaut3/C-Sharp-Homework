@@ -1,4 +1,8 @@
-﻿using TimeTracker9000.Domain.Helper;
+﻿using Newtonsoft.Json;
+using System;
+using TimeTracker9000.Domain.Helper;
+using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities;
+using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityEnums;
 using TimeTracker9000.Domain.Models;
 
 namespace TimeTracker9000.Domain.Database
@@ -9,6 +13,67 @@ namespace TimeTracker9000.Domain.Database
         public static User CurrentUser;
 
         private static List<User> _users = new List<User>();
+
+        public static void SerializeDatabase()
+        {
+            string directoryPath = @"..\..\..\Data";
+            string filePath = directoryPath +  @"\Users.txt";
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Close();
+            }
+                string userSerialized = JsonConvert.SerializeObject(_users);
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.WriteLine(userSerialized);
+                }
+           
+        }
+        public static void LoadUsers()
+        {
+            string directoryPath = @"..\..\..\Data";
+            string filePath = directoryPath + @"\Users.txt";
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    List<User> tempUser = JsonConvert.DeserializeObject<List<User>>(sr.ReadToEnd());
+                    _users = tempUser; 
+                }
+            
+        }
+        public static bool DeactivateAccount()
+        {
+            string answer;
+            while (true)
+            {
+                Console.WriteLine("Are you sure you want to deactivate your account? (Y/N)");
+                answer = Console.ReadLine();
+                if (answer.ToLower() == "y")
+                {
+                    UserDB.CurrentUser.ActiveAccount = false;
+                    ExtenderHelper.WriteInColor($"USER {UserDB.CurrentUser.Username} HAS BEEN DEACTIVATED", ConsoleColor.Red);
+                    return false;
+                }
+                if (answer.ToLower() == "n")
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.Clear();
+                    ExtenderHelper.WriteInError();
+                }
+            }
+
+        }
+
+        public static List<User> UserCycle()
+        {
+            return _users;
+        }
 
         public static void AddTestUsers()
         {
@@ -41,10 +106,143 @@ namespace TimeTracker9000.Domain.Database
             _users.Add(temp3);
               
         }
+        public static void AddActivities()
+        {
+            foreach(User user in _users)
+            {
+                user.Reading.Add(new Reading()
+                {
+                    TimeSpent = new Random().NextDouble() * 100,
+                    NumberOfPages = new Random().Next(1,300),
+                    TypeOfReading = ReadingTypes.ProfessionalLiterature
+                    
+                });
+                user.Exercising.Add(new Exercising()
+                {
+                    TimeSpent = new Random().NextDouble() * 100,
+                    TypeOfExercise = ExerciseTypes.Running
+                });
+                user.Working.Add(new Working()
+                {
+                    TimeSpent = new Random().NextDouble() * 100,
+                    Place = WorkingTypes.AtWork
+                });
+                user.Other.Add(new Other()
+                {
+                    Title = "lmao" +  new Random().Next(1,2).ToString(),
+                    TimeSpent = new Random().NextDouble() * 100,
 
-        private static List<string> _numberInNamesList = new List<string>() {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
-        private static char[] _arrayOfLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+                });
+            }
+        }
+        public static void AddActivitiesRNG()
+        {
+            foreach(User user in _users)
+            {
+                while(new Random().Next(1,100) > 50)
+                {
+                    if (new Random().Next(1, 3) == 1)
+                    {
+                        user.Reading.Add(new Reading()
+                        {
+                            TimeSpent = new Random().NextDouble() * 100,
+                            NumberOfPages = new Random().Next(1, 300),
+                            TypeOfReading = ReadingTypes.BellesLettres
 
+                        });
+                    }
+                    else
+                    {
+                        if(new Random().Next(2,4) == 2)
+                        {
+                            user.Reading.Add(new Reading()
+                            {
+                                TimeSpent = new Random().NextDouble() * 100,
+                                NumberOfPages = new Random().Next(1, 300),
+                                TypeOfReading = ReadingTypes.Fiction
+
+                            });
+                        }
+                        else
+                        {
+                            user.Reading.Add(new Reading()
+                            {
+                                TimeSpent = new Random().NextDouble() * 100,
+                                NumberOfPages = new Random().Next(1, 300),
+                                TypeOfReading = ReadingTypes.ProfessionalLiterature
+
+                            });
+                        }
+                    }
+                   
+                }
+                while (new Random().Next(1, 100) > 50)
+                {
+                    if(new Random().Next(1,3) == 1)
+                    {
+                        user.Exercising.Add(new Exercising()
+                        {
+                            TimeSpent = new Random().NextDouble() * 100,
+                            TypeOfExercise = ExerciseTypes.General
+                        });
+                    }
+                    else
+                    {
+                        if(new Random().Next(2,4) == 2)
+                        {
+                            user.Exercising.Add(new Exercising()
+                            {
+                                TimeSpent = new Random().NextDouble() * 100,
+                                TypeOfExercise = ExerciseTypes.Running
+                            });
+                        }
+                        else
+                        {
+                            user.Exercising.Add(new Exercising()
+                            {
+                                TimeSpent = new Random().NextDouble() * 100,
+                                TypeOfExercise = ExerciseTypes.Sport
+                            });
+                        }
+
+
+                    }
+
+                }
+                while (new Random().Next(1, 100) > 50)
+                {
+                    if (new Random().Next(1, 3) == 1)
+                    {
+                        user.Working.Add(new Working()
+                        {
+                            TimeSpent = new Random().NextDouble() * 100,
+                            Place = WorkingTypes.AtWork
+                        });
+                    }
+                    else
+                    {
+                        user.Working.Add(new Working()
+                        {
+                            TimeSpent = new Random().NextDouble() * 100,
+                            Place = WorkingTypes.FromHome
+                        });
+                    }
+                   
+                }
+                while (new Random().Next(1, 100) > 50)
+                {
+                   
+                    user.Other.Add(new Other()
+                    {
+                        Title = "lmao" + new Random().Next(1, 3).ToString(),
+                        TimeSpent = new Random().NextDouble() * 100,
+                    }); 
+                }
+
+            }
+        }
+
+    
         //chisto za proverka mi e metodava
         public static void ListUsers()
         {
@@ -58,6 +256,8 @@ namespace TimeTracker9000.Domain.Database
         {
             int loginAttempt = 0;
             int loginSuccess = 0;
+            int noActivation = 0;
+            string answer;
             Console.Clear();
             while(loginAttempt != 3)
             {
@@ -70,8 +270,38 @@ namespace TimeTracker9000.Domain.Database
                 {
                     if (user.Username == username && User.PasswordMatch(user, password))
                     {
-                       CurrentUser = user;
-                        loginSuccess = 1;
+                        if(user.ActiveAccount == false)
+                        {
+                            while (true)
+                            {
+                                Console.WriteLine("Would you like to reactivate your account? (Y/N)");
+                                answer = Console.ReadLine();
+                                if(answer.ToLower() == "y")
+                                {
+                                    user.ActiveAccount = true;
+                                    CurrentUser = user;
+                                    loginSuccess = 1;
+                                    break;
+                                }
+                                else if (answer.ToLower() == "n")
+                                {
+                                    loginSuccess = 1;
+                                    noActivation = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.Clear();
+                                    ExtenderHelper.WriteInError();
+                                    continue;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            CurrentUser = user;
+                            loginSuccess = 1;
+                        }
                         break;
                     }
                 }
@@ -81,9 +311,10 @@ namespace TimeTracker9000.Domain.Database
                 }
                 Console.Clear();
                 loginAttempt++;
-                ExtenderHelper.WriteInColor($"NO SUCH USERNAME AND PASSWORD COMBINATION, TRY AGAIN \n ({3 - loginAttempt} attemps remaining)", ConsoleColor.Red);
+                ExtenderHelper.WriteInColor($"NO SUCH USERNAME AND PASSWORD COMBINATION \n({3 - loginAttempt} attemps remaining)", ConsoleColor.Red);
             }
-            if(loginSuccess == 1) { return true; }
+            if (loginSuccess == 1 && noActivation == 1) { Console.Clear(); return false; }
+            else if (loginSuccess == 1) { return true; }
             else { return false; }
 
         }
@@ -95,69 +326,34 @@ namespace TimeTracker9000.Domain.Database
             while (true)
             {
                 ExtenderHelper.WriteInColor($"================= REGISTERING USER =================");
-                Console.WriteLine("Enter your first name: \n (Cannot contain any numbers)");
+                Console.WriteLine("Enter your first name: \n (Cannot contain any numbers and cannot be shorter than 2 characters)");
                 string firstname = Console.ReadLine();
-                if(string.IsNullOrEmpty(firstname) || _numberInNamesList.Any(x => firstname.Contains(x)))
+                if(!Validator.NameValidation(firstname))  
                 {
-                    ExtenderHelper.WriteInError();
                     continue;
                 }
-                Console.WriteLine("Enter your last name: \n (Cannot contain any numbers)");
+                Console.WriteLine("Enter your last name: \n (Cannot contain any numbers and cannot be shorter than 2 characters)");
                 string lastname = Console.ReadLine();
-                if (string.IsNullOrEmpty(lastname) || _numberInNamesList.Any(x => lastname.Contains(x)))
+                if (!Validator.NameValidation(lastname))
                 {
-                    ExtenderHelper.WriteInError();
                     continue;
                 }
                 Console.WriteLine("Enter your age \n (Must be over 18)");
-                bool ageValidation = int.TryParse(Console.ReadLine(), out int age);
-                if (!ageValidation)
+                int age = Validator.AgeValidation(Console.ReadLine());
+                if (age == -1)
                 {
-                    ExtenderHelper.WriteInError();
-                    continue;
-                }
-                if(age < 18 || age > 120)
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInColor("INVALID INPUT, AGE CANNOT BE BELLOW 18 OR OVER 120", ConsoleColor.Red);
                     continue;
                 }
                 Console.WriteLine("Ente your Username: \n (Must contain at least 5 characters) ");
                 string username = Console.ReadLine();
-                if (string.IsNullOrEmpty(username))
+                if (!Validator.UsernameValidation(username))
                 {
-                    ExtenderHelper.WriteInError();
-                    continue;
-                }
-                if(username.Count() < 5)
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInColor("INVALID INPUT, USERNAME CANNOT BE SHORTER THAN 5 CHARACTERS");
                     continue;
                 }
                 Console.WriteLine("Enter your password: \n (Must be at least 6 characters, contain at least 1 capital letter and 1 number ");
                 string password = Console.ReadLine();
-                if (string.IsNullOrEmpty(password))
+                if (!Validator.PasswordValidation(password))
                 {
-                    ExtenderHelper.WriteInError();
-                    continue;
-                }
-                if(password.Count() < 6)
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInColor("INVALID INPUT, PASSWORD IS TOO SHORT", ConsoleColor.Red);
-                    continue;
-                }
-                if(!_arrayOfLetters.Any(x=> password.Contains(x)))
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInColor("INVALID INPUT, PASSWORD MUST CONTAIN A CAPITAL LETTER", ConsoleColor.Red);
-                    continue;
-                }
-                if(!_numberInNamesList.Any(x=> password.Contains(x)))
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInColor("INVALID INPUT, PASSWORD MUST CONTAIN A NUMBER", ConsoleColor.Red);
                     continue;
                 }
                 User temp = new User()
@@ -176,6 +372,83 @@ namespace TimeTracker9000.Domain.Database
             }
         }
 
+        public static void ChangeFirstOrLastName()
+        {
+            string answer = "";
+            while (answer != "x")
+            {
+                ExtenderHelper.WriteInColor($"================= CHANGING FIRST OR LAST NAME =================");
+                Console.WriteLine("What would you like to change?");
+                Console.WriteLine("1. Firstname");
+                Console.WriteLine("2. Lastname");
+                Console.WriteLine("3. Both");
+                answer = Console.ReadLine();
+                if (answer != "1" &&  answer != "2" && answer != "3")
+                {
+                    ExtenderHelper.WriteInError();
+                    continue;
+                }
+                if(answer == "1")
+                {
+                    Console.Clear();
+                    while (true)
+                    {
+                        Console.WriteLine("Enter your desired Firstname: ");
+                        answer = Console.ReadLine();
+                        if (!Validator.NameValidation(answer))
+                        {
+                            continue;
+                        }
+                        UserDB.CurrentUser.FirstName = answer;
+                        break;
+                    }
+                    answer = "x";
+                }
+                if(answer == "2")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("Enter your desired Lastname: ");
+                        answer = Console.ReadLine();
+                        if (!Validator.NameValidation(answer))
+                        {
+                            continue;
+                        }
+                        UserDB.CurrentUser.LastName = answer;
+                        break;
+                    }
+                    answer = "x";
+                }
+                if(answer == "3")
+                {
+                    while (true)
+                    {
+                        Console.WriteLine("Enter your desired Firstname: ");
+                        answer = Console.ReadLine();
+                        if (!Validator.NameValidation(answer))
+                        {
+                            continue;
+                        }
+                        UserDB.CurrentUser.FirstName = answer;
+                        break;
+                    }
+                    while (true)
+                    {
+                        Console.WriteLine("Enter your desired Lastname: ");
+                        answer = Console.ReadLine();
+                        if (!Validator.NameValidation(answer))
+                        {
+                            continue;
+                        }
+                        UserDB.CurrentUser.LastName = answer;
+                        break;
+                    }
+                    answer = "x";
+                }
+
+
+            }
+        }
 
     }
 }
