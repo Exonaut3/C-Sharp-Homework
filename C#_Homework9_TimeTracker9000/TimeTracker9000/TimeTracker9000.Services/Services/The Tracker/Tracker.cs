@@ -1,4 +1,5 @@
-﻿using TimeTracker9000.Domain.Database;
+﻿using System.Threading.Channels;
+using TimeTracker9000.Domain.Database;
 using TimeTracker9000.Domain.Database.Activities;
 using TimeTracker9000.Domain.Database.Activities.ActivityEnums;
 using TimeTracker9000.Domain.Helper;
@@ -29,7 +30,6 @@ namespace TimeTracker9000.Domain.The_Tracker
                     answer = Console.ReadLine();
                     if (answer != "1" && answer != "2" && answer != "3" && answer != "4" && answer.ToLower() != "x")
                     {
-                        Console.Clear();
                         ExtenderHelper.WriteInError();
                         continue;
                     }
@@ -44,6 +44,10 @@ namespace TimeTracker9000.Domain.The_Tracker
                 Console.WriteLine("Activity selected. Press key to begin.");
                 confirmer = Console.ReadKey().ToString();
                 start = DateTime.Now;
+                Task stylePoints = new Task(() =>
+                {
+                    
+                });
                 ExtenderHelper.WriteInColor($"\nTracking has begun! Activity started at {start.Hour}:{start.Minute}:{start.Second}", ConsoleColor.Green);
                 Console.WriteLine("Press ENTER to stop tracking");
                 confirmer = Console.ReadLine();
@@ -161,12 +165,6 @@ namespace TimeTracker9000.Domain.The_Tracker
                         Console.WriteLine("1. At work");
                         Console.WriteLine("2. At home");
                         innerChoice = Console.ReadLine();
-                        if (innerChoice != "1" && innerChoice != "2")
-                        {
-                            Console.Clear();
-                            ExtenderHelper.WriteInError();
-                            continue;
-                        }
                         if (innerChoice == "1")
                         {
                             UserDB.CurrentUser.Working.Add(new Working()
@@ -175,13 +173,18 @@ namespace TimeTracker9000.Domain.The_Tracker
                                 Place = WorkingTypes.AtWork
                             });
                         }
-                        else
+                        else if (innerChoice == "2") 
                         {
                             UserDB.CurrentUser.Working.Add(new Working()
                             {
                                 TimeSpent = timeSpent,
                                 Place = WorkingTypes.FromHome
                             });
+                        }
+                        else
+                        {
+                            ExtenderHelper.WriteInError();
+                            continue;
                         }
                         Console.WriteLine($"You have spent {timeSpent:0.00} minutes Working");
                         break;
@@ -197,6 +200,7 @@ namespace TimeTracker9000.Domain.The_Tracker
                     });
                     Console.WriteLine($"You have spent {timeSpent:0.00} minutes on {answer}");
                 }
+
                 break;
 
             }

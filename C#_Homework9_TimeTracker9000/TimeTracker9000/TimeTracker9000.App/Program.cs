@@ -57,7 +57,7 @@ while (maxAttemps)
             continue;
         }
     }
-    if(!loginSuccess)
+    if (!loginSuccess)
     {
         break;
     }
@@ -74,14 +74,14 @@ while (maxAttemps)
         Console.WriteLine("5. Deactivate account");
         Console.WriteLine("6. Log out");
         answer = Console.ReadLine();
-        if(answer == "1")
+        if (answer == "1")
         {
             Console.Clear();
             Tracker.Track();
             UserDB.SerializeDatabase();
             continue;
         }
-        else if(answer == "2")
+        else if (answer == "2")
         {
             Console.Clear();
             maxAttemps = ChangePassword.PasswordChange();
@@ -105,7 +105,7 @@ while (maxAttemps)
             UserDB.CurrentUser.UserStats();            //avtomatski vrakja nazad
             continue;
         }
-        else if(answer == "5")
+        else if (answer == "5")
         {
             Console.Clear();
             loginSuccess = AccountDeactivation.DeactivateAccount();  //na somnitelno mesto ja deklarirav metodava

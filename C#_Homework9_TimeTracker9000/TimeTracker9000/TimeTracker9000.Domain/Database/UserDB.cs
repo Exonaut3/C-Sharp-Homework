@@ -1,8 +1,7 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+using TimeTracker9000.Domain.Database.Activities;
 using TimeTracker9000.Domain.Database.Activities.ActivityEnums;
 using TimeTracker9000.Domain.Helper;
-using TimeTracker9000.Domain.Database.Activities;
 using TimeTracker9000.Domain.Models;
 using Validator = TimeTracker9000.Domain.Helper.Validator;
 
@@ -20,7 +19,7 @@ namespace TimeTracker9000.Domain.Database
         public static void SerializeDatabase()
         {
             string directoryPath = @"..\..\..\Data";
-            string filePath = directoryPath +  @"\Users.txt";
+            string filePath = directoryPath + @"\Users.txt";
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -29,25 +28,25 @@ namespace TimeTracker9000.Domain.Database
             {
                 File.Create(filePath).Close();
             }
-                string userSerialized = JsonConvert.SerializeObject(_users);
-                using (StreamWriter sw = new StreamWriter(filePath))
-                {
-                    sw.WriteLine(userSerialized);
-                }
-           
+            string userSerialized = JsonConvert.SerializeObject(_users);
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                sw.WriteLine(userSerialized);
+            }
+
         }
         public static void LoadUsers()
         {
             string directoryPath = @"..\..\..\Data";
             string filePath = directoryPath + @"\Users.txt";
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    List<User> tempUser = JsonConvert.DeserializeObject<List<User>>(sr.ReadToEnd());
-                    _users = tempUser; 
-                }
-            
+            using (StreamReader sr = new StreamReader(filePath))
+            {
+                List<User> tempUser = JsonConvert.DeserializeObject<List<User>>(sr.ReadToEnd());
+                _users = tempUser;
+            }
+
         }
-        
+
 
         public static List<User> UserCycle()
         {
@@ -83,18 +82,18 @@ namespace TimeTracker9000.Domain.Database
             _users.Add(temp);
             _users.Add(temp2);
             _users.Add(temp3);
-              
+
         }
         public static void AddActivities()
         {
-            foreach(User user in _users)
+            foreach (User user in _users)
             {
                 user.Reading.Add(new Reading()
                 {
                     TimeSpent = new Random().NextDouble() * 100,
-                    NumberOfPages = new Random().Next(1,300),
+                    NumberOfPages = new Random().Next(1, 300),
                     TypeOfReading = ReadingTypes.ProfessionalLiterature
-                    
+
                 });
                 user.Exercising.Add(new Exercising()
                 {
@@ -108,7 +107,7 @@ namespace TimeTracker9000.Domain.Database
                 });
                 user.Other.Add(new Other()
                 {
-                    Title = "lmao" +  new Random().Next(1,2).ToString(),
+                    Title = "lmao" + new Random().Next(1, 2).ToString(),
                     TimeSpent = new Random().NextDouble() * 100,
 
                 });
@@ -116,9 +115,9 @@ namespace TimeTracker9000.Domain.Database
         }
         public static void AddActivitiesRNG()
         {
-            foreach(User user in _users)
+            foreach (User user in _users)
             {
-                while(new Random().Next(1,100) > 50)
+                while (new Random().Next(1, 100) > 50)
                 {
                     if (new Random().Next(1, 3) == 1)
                     {
@@ -132,7 +131,7 @@ namespace TimeTracker9000.Domain.Database
                     }
                     else
                     {
-                        if(new Random().Next(2,4) == 2)
+                        if (new Random().Next(2, 4) == 2)
                         {
                             user.Reading.Add(new Reading()
                             {
@@ -153,11 +152,11 @@ namespace TimeTracker9000.Domain.Database
                             });
                         }
                     }
-                   
+
                 }
                 while (new Random().Next(1, 100) > 50)
                 {
-                    if(new Random().Next(1,3) == 1)
+                    if (new Random().Next(1, 3) == 1)
                     {
                         user.Exercising.Add(new Exercising()
                         {
@@ -167,7 +166,7 @@ namespace TimeTracker9000.Domain.Database
                     }
                     else
                     {
-                        if(new Random().Next(2,4) == 2)
+                        if (new Random().Next(2, 4) == 2)
                         {
                             user.Exercising.Add(new Exercising()
                             {
@@ -206,22 +205,22 @@ namespace TimeTracker9000.Domain.Database
                             Place = WorkingTypes.FromHome
                         });
                     }
-                   
+
                 }
                 while (new Random().Next(1, 100) > 50)
                 {
-                   
+
                     user.Other.Add(new Other()
                     {
                         Title = "lmao" + new Random().Next(1, 3).ToString(),
                         TimeSpent = new Random().NextDouble() * 100,
-                    }); 
+                    });
                 }
 
             }
         }
 
-    
+
         public static void ListUsers()
         {
             foreach (var user in _users)
@@ -238,24 +237,24 @@ namespace TimeTracker9000.Domain.Database
             int noActivation = 0;
             string answer;
             Console.Clear();
-            while(loginAttempt != 3)
+            while (loginAttempt != 3)
             {
                 ExtenderHelper.WriteInColor($"================= LOGIN =================");
                 Console.WriteLine("Eneter Username: ");
                 string username = Console.ReadLine();
                 Console.WriteLine("Enter Password: ");
                 string password = Console.ReadLine();
-                foreach(var user in  _users)
+                foreach (var user in _users)
                 {
                     if (user.Username == username && User.PasswordMatch(user, password))
                     {
-                        if(user.ActiveAccount == false)
+                        if (user.ActiveAccount == false)
                         {
                             while (true)
                             {
                                 Console.WriteLine("Would you like to reactivate your account? (Y/N)");
                                 answer = Console.ReadLine();
-                                if(answer.ToLower() == "y")
+                                if (answer.ToLower() == "y")
                                 {
                                     user.ActiveAccount = true;
                                     CurrentUser = user;
@@ -307,7 +306,7 @@ namespace TimeTracker9000.Domain.Database
                 ExtenderHelper.WriteInColor($"================= REGISTERING USER =================");
                 Console.WriteLine("Enter your first name: \n (Cannot contain any numbers and cannot be shorter than 2 characters)");
                 string firstname = Console.ReadLine();
-                if(!Validator.NameValidation(firstname))  
+                if (!Validator.NameValidation(firstname))
                 {
                     continue;
                 }
@@ -351,83 +350,6 @@ namespace TimeTracker9000.Domain.Database
             }
         }
 
-        //public static void ChangeFirstOrLastName()
-        //{
-        //    string answer = "";
-        //    while (answer != "x")
-        //    {
-        //        ExtenderHelper.WriteInColor($"================= CHANGING FIRST OR LAST NAME =================");
-        //        Console.WriteLine("What would you like to change?");
-        //        Console.WriteLine("1. Firstname");
-        //        Console.WriteLine("2. Lastname");
-        //        Console.WriteLine("3. Both");
-        //        answer = Console.ReadLine();
-        //        if (answer != "1" &&  answer != "2" && answer != "3")
-        //        {
-        //            ExtenderHelper.WriteInError();
-        //            continue;
-        //        }
-        //        if(answer == "1")
-        //        {
-        //            Console.Clear();
-        //            while (true)
-        //            {
-        //                Console.WriteLine("Enter your desired Firstname: ");
-        //                answer = Console.ReadLine();
-        //                if (!Validator.NameValidation(answer))
-        //                {
-        //                    continue;
-        //                }
-        //                UserDB.CurrentUser.FirstName = answer;
-        //                break;
-        //            }
-        //            answer = "x";
-        //        }
-        //        if(answer == "2")
-        //        {
-        //            while (true)
-        //            {
-        //                Console.WriteLine("Enter your desired Lastname: ");
-        //                answer = Console.ReadLine();
-        //                if (!Validator.NameValidation(answer))
-        //                {
-        //                    continue;
-        //                }
-        //                UserDB.CurrentUser.LastName = answer;
-        //                break;
-        //            }
-        //            answer = "x";
-        //        }
-        //        if(answer == "3")
-        //        {
-        //            while (true)
-        //            {
-        //                Console.WriteLine("Enter your desired Firstname: ");
-        //                answer = Console.ReadLine();
-        //                if (!Validator.NameValidation(answer))
-        //                {
-        //                    continue;
-        //                }
-        //                UserDB.CurrentUser.FirstName = answer;
-        //                break;
-        //            }
-        //            while (true)
-        //            {
-        //                Console.WriteLine("Enter your desired Lastname: ");
-        //                answer = Console.ReadLine();
-        //                if (!Validator.NameValidation(answer))
-        //                {
-        //                    continue;
-        //                }
-        //                UserDB.CurrentUser.LastName = answer;
-        //                break;
-        //            }
-        //            answer = "x";
-        //        }
-
-
-        //    }
-        //}
 
     }
 }

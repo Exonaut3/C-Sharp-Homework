@@ -17,14 +17,14 @@ namespace TimeTracker9000.Domain.Models
         public List<Exercising> Exercising = new List<Exercising>();
         public List<Working> Working = new List<Working>();
         public List<Other> Other = new List<Other>();
-        
+
 
         public static string ReturnPassword()
         {
             return UserDB.CurrentUser.Password;
 
         }
-   
+
 
         public static void SetPassword(User user, string pass)
         {
@@ -32,14 +32,14 @@ namespace TimeTracker9000.Domain.Models
         }
         public static bool PasswordMatch(User user, string password)
         {
-            if(user.Password == password)
+            if (user.Password == password)
             {
                 return true;
             }
             else { return false; }
         }
-     
-        
+
+
 
         public void PrintInfo()
         {
@@ -96,7 +96,7 @@ namespace TimeTracker9000.Domain.Models
             {
                 Console.WriteLine("Your favorite genre is Proffesional Reading");
             }
-            
+
 
             totalTimeSpentInHours = 0;
             averageTimeSpent = 0;
@@ -140,14 +140,14 @@ namespace TimeTracker9000.Domain.Models
             {
                 Console.WriteLine("Your favorite type of exercise is Sport");
             }
-            
+
 
             totalTimeSpentInHours = 0;
             averageTimeSpent = 0;
             counter1 = 0;
             counter2 = 0;
             counter3 = 0;
-            foreach(Working workings in Working)
+            foreach (Working workings in Working)
             {
                 totalTimeSpentInHours += workings.TimeSpent / 60;
                 averageTimeSpent += workings.TimeSpent;
@@ -165,14 +165,14 @@ namespace TimeTracker9000.Domain.Models
             Console.WriteLine($"Average time spent working: {averageTimeSpent:0.00} minutes");
             Console.WriteLine($"Time spent working at Work: {counter1:0.00}");
             Console.WriteLine($"Time spent working at Home: {counter2:0.00}");
-            
+
             totalTimeSpentInHours = 0;
             averageTimeSpent = 0;
             counter1 = 0;
             counter2 = 0;
             counter3 = 0;
 
-            foreach(Other others in Other)
+            foreach (Other others in Other)
             {
                 totalTimeSpentInHours += others.TimeSpent / 60;
             }
@@ -181,7 +181,7 @@ namespace TimeTracker9000.Domain.Models
             ExtenderHelper.WriteInColor("======= OTHER =======", ConsoleColor.Yellow);
             Console.WriteLine($"Total time in hours: {totalTimeSpentInHours:0.00}H");
             Console.WriteLine("Hobbies: ");
-            foreach(string name in hobbyNames)
+            foreach (string name in hobbyNames)
             {
                 Console.WriteLine(name);
             }
