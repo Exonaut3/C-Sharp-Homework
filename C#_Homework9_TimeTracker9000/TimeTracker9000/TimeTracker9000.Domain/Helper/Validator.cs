@@ -1,4 +1,5 @@
 ﻿using TimeTracker9000.Domain.Database;
+using TimeTracker9000.Domain.Helper;
 
 namespace TimeTracker9000.Domain.Helper
 {

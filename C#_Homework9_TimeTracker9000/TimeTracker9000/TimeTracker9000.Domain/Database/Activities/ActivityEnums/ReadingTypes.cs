@@ -1,9 +1,9 @@
-﻿namespace TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityEnums
+﻿namespace TimeTracker9000.Domain.Database.Activities.ActivityEnums
 {
     public enum ReadingTypes
     {
         BellesLettres = 1,
-        Fiction, 
+        Fiction,
         ProfessionalLiterature
     }
 }

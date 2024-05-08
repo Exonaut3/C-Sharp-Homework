@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json;
-using System;
+using System.ComponentModel.DataAnnotations;
+using TimeTracker9000.Domain.Database.Activities.ActivityEnums;
 using TimeTracker9000.Domain.Helper;
-using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities;
-using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityEnums;
+using TimeTracker9000.Domain.Database.Activities;
 using TimeTracker9000.Domain.Models;
+using Validator = TimeTracker9000.Domain.Helper.Validator;
+
+
 
 namespace TimeTracker9000.Domain.Database
 {
-    
-    public abstract class UserDB
+
+    public static class UserDB
     {
         public static User CurrentUser;
 
@@ -44,31 +47,7 @@ namespace TimeTracker9000.Domain.Database
                 }
             
         }
-        public static bool DeactivateAccount()
-        {
-            string answer;
-            while (true)
-            {
-                Console.WriteLine("Are you sure you want to deactivate your account? (Y/N)");
-                answer = Console.ReadLine();
-                if (answer.ToLower() == "y")
-                {
-                    UserDB.CurrentUser.ActiveAccount = false;
-                    ExtenderHelper.WriteInColor($"USER {UserDB.CurrentUser.Username} HAS BEEN DEACTIVATED", ConsoleColor.Red);
-                    return false;
-                }
-                if (answer.ToLower() == "n")
-                {
-                    return true;
-                }
-                else
-                {
-                    Console.Clear();
-                    ExtenderHelper.WriteInError();
-                }
-            }
-
-        }
+        
 
         public static List<User> UserCycle()
         {
@@ -243,7 +222,6 @@ namespace TimeTracker9000.Domain.Database
         }
 
     
-        //chisto za proverka mi e metodava
         public static void ListUsers()
         {
             foreach (var user in _users)
@@ -251,6 +229,7 @@ namespace TimeTracker9000.Domain.Database
                 user.PrintInfo();
             }
         }
+        //chisto za proverka mi se metodive
 
         public static bool Login()
         {
@@ -372,83 +351,83 @@ namespace TimeTracker9000.Domain.Database
             }
         }
 
-        public static void ChangeFirstOrLastName()
-        {
-            string answer = "";
-            while (answer != "x")
-            {
-                ExtenderHelper.WriteInColor($"================= CHANGING FIRST OR LAST NAME =================");
-                Console.WriteLine("What would you like to change?");
-                Console.WriteLine("1. Firstname");
-                Console.WriteLine("2. Lastname");
-                Console.WriteLine("3. Both");
-                answer = Console.ReadLine();
-                if (answer != "1" &&  answer != "2" && answer != "3")
-                {
-                    ExtenderHelper.WriteInError();
-                    continue;
-                }
-                if(answer == "1")
-                {
-                    Console.Clear();
-                    while (true)
-                    {
-                        Console.WriteLine("Enter your desired Firstname: ");
-                        answer = Console.ReadLine();
-                        if (!Validator.NameValidation(answer))
-                        {
-                            continue;
-                        }
-                        UserDB.CurrentUser.FirstName = answer;
-                        break;
-                    }
-                    answer = "x";
-                }
-                if(answer == "2")
-                {
-                    while (true)
-                    {
-                        Console.WriteLine("Enter your desired Lastname: ");
-                        answer = Console.ReadLine();
-                        if (!Validator.NameValidation(answer))
-                        {
-                            continue;
-                        }
-                        UserDB.CurrentUser.LastName = answer;
-                        break;
-                    }
-                    answer = "x";
-                }
-                if(answer == "3")
-                {
-                    while (true)
-                    {
-                        Console.WriteLine("Enter your desired Firstname: ");
-                        answer = Console.ReadLine();
-                        if (!Validator.NameValidation(answer))
-                        {
-                            continue;
-                        }
-                        UserDB.CurrentUser.FirstName = answer;
-                        break;
-                    }
-                    while (true)
-                    {
-                        Console.WriteLine("Enter your desired Lastname: ");
-                        answer = Console.ReadLine();
-                        if (!Validator.NameValidation(answer))
-                        {
-                            continue;
-                        }
-                        UserDB.CurrentUser.LastName = answer;
-                        break;
-                    }
-                    answer = "x";
-                }
+        //public static void ChangeFirstOrLastName()
+        //{
+        //    string answer = "";
+        //    while (answer != "x")
+        //    {
+        //        ExtenderHelper.WriteInColor($"================= CHANGING FIRST OR LAST NAME =================");
+        //        Console.WriteLine("What would you like to change?");
+        //        Console.WriteLine("1. Firstname");
+        //        Console.WriteLine("2. Lastname");
+        //        Console.WriteLine("3. Both");
+        //        answer = Console.ReadLine();
+        //        if (answer != "1" &&  answer != "2" && answer != "3")
+        //        {
+        //            ExtenderHelper.WriteInError();
+        //            continue;
+        //        }
+        //        if(answer == "1")
+        //        {
+        //            Console.Clear();
+        //            while (true)
+        //            {
+        //                Console.WriteLine("Enter your desired Firstname: ");
+        //                answer = Console.ReadLine();
+        //                if (!Validator.NameValidation(answer))
+        //                {
+        //                    continue;
+        //                }
+        //                UserDB.CurrentUser.FirstName = answer;
+        //                break;
+        //            }
+        //            answer = "x";
+        //        }
+        //        if(answer == "2")
+        //        {
+        //            while (true)
+        //            {
+        //                Console.WriteLine("Enter your desired Lastname: ");
+        //                answer = Console.ReadLine();
+        //                if (!Validator.NameValidation(answer))
+        //                {
+        //                    continue;
+        //                }
+        //                UserDB.CurrentUser.LastName = answer;
+        //                break;
+        //            }
+        //            answer = "x";
+        //        }
+        //        if(answer == "3")
+        //        {
+        //            while (true)
+        //            {
+        //                Console.WriteLine("Enter your desired Firstname: ");
+        //                answer = Console.ReadLine();
+        //                if (!Validator.NameValidation(answer))
+        //                {
+        //                    continue;
+        //                }
+        //                UserDB.CurrentUser.FirstName = answer;
+        //                break;
+        //            }
+        //            while (true)
+        //            {
+        //                Console.WriteLine("Enter your desired Lastname: ");
+        //                answer = Console.ReadLine();
+        //                if (!Validator.NameValidation(answer))
+        //                {
+        //                    continue;
+        //                }
+        //                UserDB.CurrentUser.LastName = answer;
+        //                break;
+        //            }
+        //            answer = "x";
+        //        }
 
 
-            }
-        }
+        //    }
+        //}
 
     }
 }

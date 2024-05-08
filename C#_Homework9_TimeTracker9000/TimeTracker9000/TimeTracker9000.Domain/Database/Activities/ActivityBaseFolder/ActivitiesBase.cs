@@ -1,4 +1,4 @@
-﻿namespace TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityBase
+﻿namespace TimeTracker9000.Domain.Database.Activities.ActivityBaseFolder
 {
     public class ActivitiesBase
     {

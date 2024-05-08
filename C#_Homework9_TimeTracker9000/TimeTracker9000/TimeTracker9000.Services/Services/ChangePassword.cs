@@ -2,7 +2,7 @@
 using TimeTracker9000.Domain.Helper;
 using TimeTracker9000.Domain.Models;
 
-namespace TimeTracker9000.Domain.MainMenu
+namespace TimeTracker9000.Services.Services
 {
     public static class ChangePassword
     {
@@ -15,7 +15,7 @@ namespace TimeTracker9000.Domain.MainMenu
                 ExtenderHelper.WriteInColor($"================= CHANGING PASSWORD =================");
                 Console.WriteLine("Enter Old password to confirm user: ");
                 password = Console.ReadLine();
-                if(password != User.ReturnPassword())
+                if (password != User.ReturnPassword())
                 {
                     Console.Clear();
                     attempts++;
@@ -26,7 +26,7 @@ namespace TimeTracker9000.Domain.MainMenu
                 {
                     break;
                 }
-                
+
             }
             while (attempts != 3)
             {

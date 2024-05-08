@@ -1,8 +1,8 @@
 ﻿using TimeTracker9000.Domain.Database;
+using TimeTracker9000.Domain.Domain;
 using TimeTracker9000.Domain.Helper;
-using TimeTracker9000.Domain.MainMenu;
-using TimeTracker9000.Domain.Models;
 using TimeTracker9000.Domain.The_Tracker;
+using TimeTracker9000.Services.Services;
 
 //UserDB.AddTestUsers();
 //UserDB.AddActivities();
@@ -25,11 +25,6 @@ while (maxAttemps)
         Console.WriteLine("3. Print Userinfo");
 
         answer = Console.ReadLine();
-        if (answer != "1" && answer != "2" && answer != "3")
-        {
-            ExtenderHelper.WriteInError();
-            continue;
-        }
         if (answer == "1")
         {
             if (!UserDB.Login())
@@ -44,18 +39,22 @@ while (maxAttemps)
                 break;
             }
         }
-
-        if (answer == "2")
+        else if (answer == "2")
         {
             UserDB.RegisterUser();
             UserDB.SerializeDatabase();
-        }
 
-        if (answer == "3")
+        }
+        else if (answer == "3")
         {
             Console.Clear();
             ExtenderHelper.WriteInColor($"================= PRINTING USER INFO =================");
             UserDB.ListUsers();
+        }
+        else
+        {
+            ExtenderHelper.WriteInError();
+            continue;
         }
     }
     if(!loginSuccess)
@@ -75,11 +74,6 @@ while (maxAttemps)
         Console.WriteLine("5. Deactivate account");
         Console.WriteLine("6. Log out");
         answer = Console.ReadLine();
-        if (answer != "1" && answer != "2" && answer != "3" && answer != "4" && answer != "5" && answer != "6")
-        {
-            ExtenderHelper.WriteInError();
-            continue;
-        }
         if(answer == "1")
         {
             Console.Clear();
@@ -87,7 +81,7 @@ while (maxAttemps)
             UserDB.SerializeDatabase();
             continue;
         }
-        if(answer == "2")
+        else if(answer == "2")
         {
             Console.Clear();
             maxAttemps = ChangePassword.PasswordChange();
@@ -98,30 +92,36 @@ while (maxAttemps)
 
             UserDB.SerializeDatabase();
         }
-        if (answer == "3")
+        else if (answer == "3")
         {
             Console.Clear();
-            UserDB.ChangeFirstOrLastName();             // ova go napraviv pred da vidam delot sto mi vika treba se da piknam vo account managment :((((
+            NameChangerService.ChangeFirstOrLastName();             // ova go napraviv pred da vidam delot sto mi vika treba se da piknam vo account managment :((((
             UserDB.SerializeDatabase();
             continue;
         }
-        if (answer == "4")
+        else if (answer == "4")
         {
             Console.Clear();
             UserDB.CurrentUser.UserStats();            //avtomatski vrakja nazad
             continue;
         }
-        if(answer == "5")
+        else if(answer == "5")
         {
             Console.Clear();
-            loginSuccess = UserDB.DeactivateAccount();  //na somnitelno mesto ja deklarirav metodava
+            loginSuccess = AccountDeactivation.DeactivateAccount();  //na somnitelno mesto ja deklarirav metodava
             UserDB.SerializeDatabase();
         }
-        if (answer == "6")
+        else if (answer == "6")
         {
             Console.Clear();
             ExtenderHelper.WriteInColor($"User {UserDB.CurrentUser.Username} is logged out", ConsoleColor.Yellow);
+            UserDB.CurrentUser = null;
             loginSuccess = false;
+        }
+        else
+        {
+            ExtenderHelper.WriteInError();
+            continue;
         }
     }
 
@@ -136,3 +136,8 @@ while (maxAttemps)
 //Golema maana mi e shto ne uspeav da se zadrzham za password da mi e so protected keyword
 //Bidejki nemashe kako da go serijaliziram i zachuvam vo databazata
 //Ali ne sum na cybersecurity zatoa, it is what it is
+//povekjeto stvari se vo userDB
+
+//Edit:
+//Pri optimizacija mislam deka indirektno primeniv mnogu "Piggybacking" 
+//ne sakashe da mi funkcionira bez toa

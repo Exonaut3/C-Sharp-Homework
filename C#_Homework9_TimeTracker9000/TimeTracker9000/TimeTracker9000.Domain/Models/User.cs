@@ -1,8 +1,7 @@
 ﻿using TimeTracker9000.Domain.Database;
+using TimeTracker9000.Domain.Database.Activities;
+using TimeTracker9000.Domain.Database.Activities.ActivityEnums;
 using TimeTracker9000.Domain.Helper;
-using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities;
-using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityBase;
-using TimeTracker9000.Domain.MainMenu.The_Tracker.Activities.ActivityEnums;
 
 namespace TimeTracker9000.Domain.Models
 {

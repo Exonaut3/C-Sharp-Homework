@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker9000.App", "TimeTracker9000.App\TimeTracker9000.App.csproj", "{7C00AFAB-2158-431E-A7AC-9C9CF054892A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker9000.App", "TimeTracker9000.App\TimeTracker9000.App.csproj", "{7C00AFAB-2158-431E-A7AC-9C9CF054892A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker9000.Domain", "TimeTracker9000.Domain\TimeTracker9000.Domain.csproj", "{3DF21C05-AA49-4A13-B8F5-46E7BC76780E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeTracker9000.Domain", "TimeTracker9000.Domain\TimeTracker9000.Domain.csproj", "{3DF21C05-AA49-4A13-B8F5-46E7BC76780E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTracker9000.Services", "TimeTracker9000.Services\TimeTracker9000.Services.csproj", "{6E299DA3-564C-4AAD-80AB-2C0D7C612357}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3DF21C05-AA49-4A13-B8F5-46E7BC76780E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DF21C05-AA49-4A13-B8F5-46E7BC76780E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DF21C05-AA49-4A13-B8F5-46E7BC76780E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E299DA3-564C-4AAD-80AB-2C0D7C612357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E299DA3-564C-4AAD-80AB-2C0D7C612357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E299DA3-564C-4AAD-80AB-2C0D7C612357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E299DA3-564C-4AAD-80AB-2C0D7C612357}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

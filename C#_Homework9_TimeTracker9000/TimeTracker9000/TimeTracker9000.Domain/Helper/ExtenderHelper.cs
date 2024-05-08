@@ -13,10 +13,10 @@
 
         }
 
-       public static void WriteInError()
+        public static void WriteInError()
         {
             Console.Clear();
-            Console.ForegroundColor= ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("INVALID INPUT, TRY AGAIN");
             Console.ResetColor();
         }
