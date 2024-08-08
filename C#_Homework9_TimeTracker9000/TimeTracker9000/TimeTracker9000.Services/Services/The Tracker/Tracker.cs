@@ -1,4 +1,5 @@
-﻿using System.Threading.Channels;
+﻿using System.Diagnostics;
+using System.Threading.Channels;
 using TimeTracker9000.Domain.Database;
 using TimeTracker9000.Domain.Database.Activities;
 using TimeTracker9000.Domain.Database.Activities.ActivityEnums;
@@ -38,18 +39,25 @@ namespace TimeTracker9000.Domain.The_Tracker
                 if(answer.ToLower() == "x")
                 {
                     Console.Clear();
-
                     break;
                 }
                 Console.WriteLine("Activity selected. Press key to begin.");
                 confirmer = Console.ReadKey().ToString();
                 start = DateTime.Now;
-                Task stylePoints = new Task(() =>
+                confirmer = "lmao";
+                Stopwatch sw = Stopwatch.StartNew();
+                Thread stylePoints = new Thread(() =>
                 {
-                    
+                     while (confirmer == "lmao")
+                    {
+                        Console.Clear();
+                        ExtenderHelper.WriteInColor($"\nTracking has begun! Activity started at " + start.TimeOfDay.ToString("hh\\:mm\\:ss"), ConsoleColor.Green);
+                        Console.WriteLine("Press ENTER to stop tracking");
+                        ExtenderHelper.WriteInColor($"Time elapsed: " + sw.Elapsed.ToString("mm\\:ss\\.ff"), ConsoleColor.Green);
+                        Thread.Sleep(1000);
+                    }
                 });
-                ExtenderHelper.WriteInColor($"\nTracking has begun! Activity started at {start.Hour}:{start.Minute}:{start.Second}", ConsoleColor.Green);
-                Console.WriteLine("Press ENTER to stop tracking");
+                stylePoints.Start();
                 confirmer = Console.ReadLine();
                 end = DateTime.Now;
                 double timeSpent = (end - start).TotalMinutes;

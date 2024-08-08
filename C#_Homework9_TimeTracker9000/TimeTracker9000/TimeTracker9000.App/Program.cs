@@ -95,14 +95,14 @@ while (maxAttemps)
         else if (answer == "3")
         {
             Console.Clear();
-            NameChangerService.ChangeFirstOrLastName();             // ova go napraviv pred da vidam delot sto mi vika treba se da piknam vo account managment :((((
+            NameChangerService.ChangeFirstOrLastName();               // ova go napraviv pred da vidam delot sto mi vika treba se da piknam vo account managment :((((
             UserDB.SerializeDatabase();
             continue;
         }
         else if (answer == "4")
         {
             Console.Clear();
-            UserDB.CurrentUser.UserStats();            //avtomatski vrakja nazad
+            UserDB.CurrentUser.UserStats();                           //avtomatski vrakja nazad
             continue;
         }
         else if (answer == "5")

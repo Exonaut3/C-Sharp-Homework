@@ -1,0 +1,32 @@
+﻿@using BurgerApp.DataAccess
+@using BurgerApp.Domain;
+@model Burger;
+@{
+    List<Burger> burgersForOrder = new List<Burger>();
+    void AddBurger(Burger burger)
+    {
+        burgersForOrder.Add(burger);
+        Console.WriteLine("Lmao");
+    }
+
+}
+
+<div class="container text-center">
+    <div class="row">
+        @{
+            foreach (Burger burger in ViewBag.Burgers)
+            {
+                    <div style="background-color: red;  border: solid, 3px, green" class="col-3">
+                        <div class="p-3">@burger.Name</div>
+                        <div class="p-3">*picture goes here</div>
+                        <div class="p-3">@burger.Price$</div>
+                        <button type="button" class="btn btn-secondary">Add to Order</button>
+                    </div>
+            }
+        }
+    </div>
+</div>
+
+<script>
+
+</script>
